@@ -1,3 +1,11 @@
+// Hide loading overlay when all resources are loaded
+window.addEventListener('load', function() {
+    const loadingOverlay = document.getElementById('loading-overlay');
+    if (loadingOverlay) {
+        loadingOverlay.classList.add('hidden');
+    }
+});
+
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -62,7 +70,7 @@ function parseMarkdown(markdown) {
 // Load news files
 async function loadNews() {
     const newsContainer = document.getElementById('news-container');
-    if (!newsContainer) return;
+    if (!newsContainer) return Promise.resolve();
     
     try {
         // Define the news files to load
@@ -102,14 +110,18 @@ async function loadNews() {
             `;
             newsContainer.appendChild(newsBox);
         }
+        
+        // Return a resolved promise
+        return Promise.resolve();
     } catch (error) {
         console.error('Error loading news:', error);
         newsContainer.innerHTML = '<p>无法加载新闻内容。</p>';
+        return Promise.reject(error);
     }
 }
 
 // Load news when page loads
-document.addEventListener('DOMContentLoaded', loadNews);
+// Removed to prevent duplicate loading
 
 // Copy IP address functionality
 document.querySelectorAll('.copy-ip').forEach(button => {
@@ -136,25 +148,49 @@ document.querySelectorAll('.copy-ip').forEach(button => {
     });
 });
 
-// Scroll animations for project cards
-const projectCards = document.querySelectorAll('.project-card');
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = 1;
-            entry.target.style.transform = 'translateY(0)';
-        }
+// Scroll animations for project cards and news boxes
+// We need to wait for the news to be loaded before we can observe them
+function initScrollAnimations() {
+    const projectCards = document.querySelectorAll('.project-card');
+    const newsBoxes = document.querySelectorAll('.news-box');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Add animate class to trigger transition
+                entry.target.classList.add('animate');
+            } else {
+                // Remove animate class when element is not in viewport
+                entry.target.classList.remove('animate');
+            }
+        });
+    }, {
+        threshold: 0.1
     });
-}, {
-    threshold: 0.1
+    
+    projectCards.forEach(card => {
+        observer.observe(card);
+    });
+    
+    // Apply same animation to news boxes
+    newsBoxes.forEach(box => {
+        observer.observe(box);
+    });
+}
+
+// Initialize scroll animations after news is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // For project cards, we can initialize immediately
+    initScrollAnimations();
 });
 
-projectCards.forEach(card => {
-    card.style.opacity = 0;
-    card.style.transform = 'translateY(20px)';
-    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    observer.observe(card);
+// For news boxes, we need to wait for them to be loaded
+// We'll call initScrollAnimations again after news is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    loadNews().then(() => {
+        // Reinitialize scroll animations to include news boxes
+        initScrollAnimations();
+    });
 });
 
 // Enhanced typing effect for hero section
