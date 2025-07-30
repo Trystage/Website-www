@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trystage - 为世界而诞生</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="icon.png" alt="Trystage Icon">
+            <h1>TRYSTAGE</h1>
+        </div>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#projects">服务器列表</a></li>
+                <li><a href="#about">关于我们</a></li>
+                <li><a href="http://wiki.trystage.win/zh/home">加入我们</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1 class="typing-text">Trystage</h1>
+                <h2>一个为创造与竞技而生的社区。</h2>
+                <a href="#projects" class="cta-button">探索我们的服务器</a>
+            </div>
+        </section>
+
+        <section id="projects" class="projects">
+            <h2>我们的服务器</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>TrystageBedwars</h3>
+                    <p>基于全球最大服务器 Hypixel 设计，提供专业的高质量起床战争体验。</p>
+                    <ul>
+                        <li>专业级竞技场</li>
+                        <li>中高延迟手感</li>
+                        <li>活跃的PVP社区</li>
+                    </ul>
+                    <div class="card-buttons">
+                        <button class="detail-button">了解详情</button>
+                        <button class="copy-ip" data-ip="bw.trystage.win">复制IP地址</button>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <h3>TrystageServer</h3>
+                    <p>一个充满设计与未来感的小游戏服务器，对完整世界的挖掘与创新。</p>
+                    <ul>
+                        <li>特殊游戏体验</li>
+                        <li>内容更新极快</li>
+                        <li>极高的可探索性</li>
+                    </ul>
+                    <div class="card-buttons">
+                        <button class="detail-button">了解详情</button>
+                        <button class="copy-ip" data-ip="mc.trystage.win">复制IP地址</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- News Section -->
+        <section id="news">
+            <div class="container">
+                <h2>最新新闻</h2>
+                <div id="news-container" class="news-grid">
+                    <!-- News items will be loaded here by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Trystage</p>
+        <div class="social-links">
+            <a href="https://discord.gg/invite/5Gxu9xzAeN" class="social-icon">Discord</a>
+            <a href="https://space.bilibili.com/1478748996" class="social-icon">Bilibili</a>
+            <a href="https://qm.qq.com/q/U8kg88Yn4c" class="social-icon">QQ群</a>
+            <a href="https://www.douyin.com/user/MS4wLjABAAAAnSlpiXWV4S9aTOuNKislQoOn7p5shjojg-Rv7wIxCho" class="social-icon">抖音</a>
+            <a href="https://forum.trystage.win/" class="social-icon">论坛</a>
+            <a href="https://api.trystage.win/" class="social-icon">API</a>
+        </div>
+    </footer>
+
+    <div id="toast"></div>
+    <script src="script.js"></script>
+</body>
+</html>
