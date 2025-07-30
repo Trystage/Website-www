@@ -70,32 +70,40 @@ function parseMarkdown(markdown) {
 // Load news files
 async function loadNews() {
     const newsContainer = document.getElementById('news-container');
-    if (!newsContainer) return Promise.resolve();
+    
+    // Check if news container exists
+    if (!newsContainer) {
+        console.error('News container not found');
+        return Promise.resolve(); // Return a resolved promise
+    }
     
     try {
-        // Define the news files to load
-        const newsFiles = ['news1.md', 'news2.md', 'news3.md'];
+        // Clear existing content
+        newsContainer.innerHTML = '';
         
-        // Load each news file
+        // Load all markdown files from the news directory
+        const newsFiles = ['news1.md', 'news2.md', 'news3.md']; // Add more files as needed
+        
+        // Create news boxes for the scrolling effect
+        const newsBoxes = [];
+        
         for (const file of newsFiles) {
             const response = await fetch(`news/${file}`);
             if (!response.ok) {
                 throw new Error(`Failed to load ${file}`);
             }
             
-            const markdown = await response.text();
+            let content = await response.text();
             
-            // Parse the markdown content
-            // Extract title (first line starting with #)
-            const titleMatch = markdown.match(/^# (.+)$/m);
+            // Extract title (first # heading)
+            const titleMatch = content.match(/^# (.+)$/m);
             const title = titleMatch ? titleMatch[1] : '无标题';
             
-            // Extract date (last line starting with 发布时间：)
-            const dateMatch = markdown.match(/发布时间：(.+)$/m);
+            // Extract date (line starting with "发布时间：")
+            const dateMatch = content.match(/^发布时间：(.+)$/m);
             const date = dateMatch ? dateMatch[1] : '';
             
-            // Extract content (everything except the title and date lines)
-            let content = markdown;
+            // Remove title and date from content
             content = content.replace(/^# .+$/m, ''); // Remove title line
             content = content.replace(/发布时间：.+$/m, ''); // Remove date line
             content = content.trim(); // Remove leading/trailing whitespace
@@ -105,11 +113,20 @@ async function loadNews() {
             newsBox.className = 'news-box';
             newsBox.innerHTML = `
                 <h3>${title}</h3>
-                <div class="news-content">${parseMarkdown(content)}</div>
+                <div class="news-content styled-content">${parseMarkdown(content)}</div>
                 ${date ? `<div class="news-date">发布时间：${date}</div>` : ''}
             `;
-            newsContainer.appendChild(newsBox);
+            newsBoxes.push(newsBox);
         }
+        
+        // Append news boxes twice for seamless scrolling
+        newsBoxes.forEach(box => {
+            newsContainer.appendChild(box.cloneNode(true));
+        });
+        
+        newsBoxes.forEach(box => {
+            newsContainer.appendChild(box);
+        });
         
         // Return a resolved promise
         return Promise.resolve();
