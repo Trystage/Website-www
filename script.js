@@ -14,10 +14,36 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         const targetId = this.getAttribute('href');
         const targetElement = document.querySelector(targetId);
         
-        window.scrollTo({
-            top: targetElement.offsetTop - 70, // Adjust for fixed header
-            behavior: 'smooth'
+        // Custom smooth scrolling with easing function
+        const targetPosition = targetElement.offsetTop - 70; // Adjust for fixed header
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        const duration = 1000;
+        let start = null;
+        
+        function animation(currentTime) {
+            if (start === null) start = currentTime;
+            const timeElapsed = currentTime - start;
+            const run = ease(timeElapsed, startPosition, distance, duration);
+            window.scrollTo(0, run);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
+        }
+        
+        // Easing function for smooth animation
+        function ease(t, b, c, d) {
+            t /= d / 2;
+            if (t < 1) return c / 2 * t * t + b;
+            t--;
+            return -c / 2 * (t * (t - 2) - 1) + b;
+        }
+        
+        requestAnimationFrame(animation);
+        
+        // Update active navigation link
+        document.querySelectorAll('nav ul li a').forEach(link => {
+            link.classList.remove('active');
         });
+        this.classList.add('active');
         
         // Close mobile menu if open
         const navMenu = document.querySelector('.nav-menu');
@@ -170,6 +196,7 @@ document.querySelectorAll('.copy-ip').forEach(button => {
 function initScrollAnimations() {
     const projectCards = document.querySelectorAll('.project-card');
     const newsBoxes = document.querySelectorAll('.news-box');
+    const aboutSection = document.querySelector('#about');
     
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -193,12 +220,37 @@ function initScrollAnimations() {
     newsBoxes.forEach(box => {
         observer.observe(box);
     });
+    
+    // Apply animation to about section
+    if (aboutSection) {
+        observer.observe(aboutSection);
+    }
 }
 
 // Initialize scroll animations after news is loaded
 document.addEventListener('DOMContentLoaded', () => {
     // For project cards, we can initialize immediately
     initScrollAnimations();
+    
+    // Set initial active navigation link
+    const navLinks = document.querySelectorAll('nav ul li a');
+    const sections = document.querySelectorAll('main section');
+    
+    let current = '';
+    
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        
+        if (window.pageYOffset >= (sectionTop - 100)) {
+            current = section.getAttribute('id');
+        }
+    });
+    
+    navLinks.forEach(link => {
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
+    });
 });
 
 // For news boxes, we need to wait for them to be loaded
@@ -307,6 +359,31 @@ function getCurrentSectionIndex() {
     return currentSectionIndex;
 }
 
+// Improved scroll position detection for navigation links
+function updateNavigationOnScroll() {
+    const sections = document.querySelectorAll('main section');
+    const navLinks = document.querySelectorAll('nav ul li a');
+    
+    let current = '';
+    
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        const scrollPosition = window.pageYOffset + window.innerHeight / 2;
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            current = section.getAttribute('id');
+        }
+    });
+    
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
+    });
+}
+
 // Scroll with mouse wheel - with debouncing
 let wheelTimeout;
 window.addEventListener('wheel', (e) => {
@@ -353,4 +430,9 @@ window.addEventListener('keydown', (e) => {
     
     // Prevent default behavior for arrow keys
     e.preventDefault();
+});
+
+// Update active navigation link based on scroll position
+window.addEventListener('scroll', () => {
+    updateNavigationOnScroll();
 });
