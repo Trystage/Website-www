@@ -108,6 +108,7 @@ async function loadNews() {
         newsContainer.innerHTML = '';
         
         // Load all markdown files from the news directory
+        // Show all news items on both desktop and mobile
         const newsFiles = ['news1.md', 'news2.md', 'news3.md']; // Add more files as needed
         
         // Create news boxes for the scrolling effect
@@ -145,13 +146,9 @@ async function loadNews() {
             newsBoxes.push(newsBox);
         }
         
-        // Append news boxes twice for seamless scrolling
+        // Append news boxes once for static display
         newsBoxes.forEach(box => {
             newsContainer.appendChild(box.cloneNode(true));
-        });
-        
-        newsBoxes.forEach(box => {
-            newsContainer.appendChild(box);
         });
         
         // Return a resolved promise

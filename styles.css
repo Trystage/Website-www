@@ -178,6 +178,18 @@ nav ul li a.active {
     transform: translateY(-9px) rotate(-45deg);
 }
 
+/* Loading Overlay */
+#loading-overlay {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#loading-overlay .loading-spinner {
+    margin-bottom: 1rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .hero-content h1 {
@@ -371,9 +383,9 @@ nav ul li a.active {
     display: flex;
     flex-direction: row;
     gap: 30px;
-    overflow-x: auto;
+    overflow-x: hidden;
     padding: 10px;
-    scrollbar-width: thin;
+    scrollbar-width: none;
     scrollbar-color: #4CAF50 #f5f5f5;
 }
 
@@ -558,32 +570,13 @@ nav ul li a.active {
 }
 
 /* News Section */
-#news-scroll-container {
-    overflow: hidden;
-    width: 100%;
-    position: relative;
-    margin-bottom: 2rem;
-}
-
 #news-container {
     display: flex;
+    flex-direction: row;
     gap: 2rem;
-    width: max-content;
-    max-width: 100%;
-    animation: scrollLeft 20s linear infinite;
-}
-
-#news-scroll-container:hover #news-container {
-    animation-play-state: paused;
-}
-
-@keyframes scrollLeft {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .news-box {
@@ -702,6 +695,7 @@ footer {
     
     #news .container {
         padding: 0 15px;
+        overflow-x: hidden;
     }
     
     #news h2 {
@@ -711,20 +705,23 @@ footer {
         padding: 10px 10px;
     }
     
-    .news-grid {
+    /* News container for mobile - horizontal scroll */
+    #news-container {
+        display: flex;
+        flex-direction: row;
+        overflow-x: hidden;
+        height: 80vh;
         gap: 15px;
-        padding: 5px;
+        padding: 10px 0;
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
     }
     
     .news-box {
-        width: 280px;
+        width: 80vw; /* Use 80% of viewport width */
         min-width: 280px;
         padding: 20px;
-        margin-right: 15px; /* Add margin to prevent content from touching edges */
-    }
-    
-    .news-box:last-child {
-        margin-right: 0; /* Remove margin from the last box */
+        flex-shrink: 0; /* Prevent boxes from shrinking */
+        margin-right: 0;
     }
     
     /* Fix spacing between sections */
@@ -749,22 +746,7 @@ footer {
     
     /* Additional fix for news section */
     #news-scroll-container {
-        margin-bottom: 1rem;
-        max-height: 300px; /* Limit height on mobile */
-        overflow: hidden; /* Changed from overflow-y to overflow */
-    }
-    
-    #news-container {
-        animation-duration: 30s; /* Slow down animation on mobile */
-        width: 100%; /* Prevent overflow on mobile */
-        overflow-x: hidden; /* Changed from auto to hidden */
-        display: block; /* Changed from flex to block */
-    }
-    
-    .news-grid {
-        display: block;
-        overflow-x: auto;
-        padding: 10px 0;
+        display: none;
     }
     
     /* Reduce project card size on mobile */
