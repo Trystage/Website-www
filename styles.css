@@ -10,13 +10,15 @@ body {
     background-color: #F0F0F0;
     color: #1A1A1A;
     line-height: 1.6;
-    overflow: hidden;
+    overflow-x: hidden; /* Prevent horizontal overflow */
+    width: 100%; /* Changed from 100vw to prevent overflow */
 }
 
 /* Smooth scrolling animation */
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px; /* Adjust for fixed header */
+    overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
 h1, h2, h3 {
@@ -39,7 +41,7 @@ ul {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vw;
+    height: 100vh; /* Changed from 100vw to 100vh */
     background-color: #F0F0F0;
     display: flex;
     flex-direction: column;
@@ -74,7 +76,7 @@ header {
     position: fixed;
     top: -100px; /* Start above the viewport */
     left: 0;
-    width: 100vw;
+    width: 100%; /* Changed from 100vw to prevent overflow */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -138,7 +140,7 @@ nav ul li a::after {
 
 nav ul li a:hover::after,
 nav ul li a.active::after {
-    width: 100vw;
+    width: 100%;
 }
 
 /* Active navigation link */
@@ -196,7 +198,7 @@ nav ul li a.active {
         top: 80px;
         flex-direction: column;
         background-color: rgba(255, 255, 255, 0.95);
-        width: 100vw;
+        width: 100%; /* Changed from 100vw to prevent overflow */
         text-align: center;
         transition: 0.3s;
         box-shadow: 0 10px 27px rgba(0, 0, 0, 0.3);
@@ -567,6 +569,7 @@ nav ul li a.active {
     display: flex;
     gap: 2rem;
     width: max-content;
+    max-width: 100%;
     animation: scrollLeft 20s linear infinite;
 }
 
@@ -717,6 +720,11 @@ footer {
         width: 280px;
         min-width: 280px;
         padding: 20px;
+        margin-right: 15px; /* Add margin to prevent content from touching edges */
+    }
+    
+    .news-box:last-child {
+        margin-right: 0; /* Remove margin from the last box */
     }
     
     /* Fix spacing between sections */
@@ -743,11 +751,20 @@ footer {
     #news-scroll-container {
         margin-bottom: 1rem;
         max-height: 300px; /* Limit height on mobile */
-        overflow-y: hidden;
+        overflow: hidden; /* Changed from overflow-y to overflow */
     }
     
     #news-container {
         animation-duration: 30s; /* Slow down animation on mobile */
+        width: 100%; /* Prevent overflow on mobile */
+        overflow-x: hidden; /* Changed from auto to hidden */
+        display: block; /* Changed from flex to block */
+    }
+    
+    .news-grid {
+        display: block;
+        overflow-x: auto;
+        padding: 10px 0;
     }
     
     /* Reduce project card size on mobile */
