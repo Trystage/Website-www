@@ -86,6 +86,11 @@ header {
     z-index: 1000;
     opacity: 0;
     animation: headerSlideDown 0.7s ease forwards 0.5s; /* Animation with delay */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
 }
 
 @keyframes headerSlideDown {
@@ -628,6 +633,11 @@ footer {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
 }
 
 .social-links {
@@ -642,6 +652,75 @@ footer {
 }
 
 .social-links a:hover {
+    color: #00BFFF;
+}
+
+/* QQ Drawer */
+.qq-drawer {
+    position: relative;
+    display: inline-block;
+}
+
+.qq-drawer-toggle {
+    background: none;
+    border: none;
+    color: white;
+    margin: 0 1rem;
+    font-weight: 600;
+    transition: color 0.3s;
+    cursor: pointer;
+}
+
+.qq-drawer-toggle:hover {
+    color: #00BFFF;
+}
+
+.qq-drawer-content {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 10px;
+    display: block;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 245px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1), transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    transform: translateX(-50%) translateY(20px);
+    color: black;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    pointer-events: none;
+}
+
+.qq-drawer-content.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+.qq-drawer-content.show {
+    display: flex;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.qq-group-link {
+    color: black;
+    text-align: center;
+    padding: 5px;
+    transition: color 0.3s;
+    text-decoration: none;
+    display: block;
+}
+
+.qq-group-link:hover {
     color: #00BFFF;
 }
 
