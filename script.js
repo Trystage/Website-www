@@ -296,7 +296,7 @@ function scrollToSection(index) {
         // Use custom smooth scrolling for better control
         const startPosition = window.pageYOffset;
         const distance = targetTop - startPosition;
-        const duration = 1000; // milliseconds
+        const duration = 500; // milliseconds
         let start = null;
         
         function animation(currentTime) {
