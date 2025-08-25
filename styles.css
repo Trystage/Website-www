@@ -5,6 +5,16 @@
     box-sizing: border-box;
 }
 
+/* Hide scrollbar for main page */
+html::-webkit-scrollbar {
+    display: none;
+}
+
+html {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
 body {
     font-family: 'Open Sans', sans-serif;
     background-color: #F0F0F0;
