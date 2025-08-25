@@ -296,7 +296,7 @@ function scrollToSection(index) {
         // Use custom smooth scrolling for better control
         const startPosition = window.pageYOffset;
         const distance = targetTop - startPosition;
-        const duration = 1000; // milliseconds
+        const duration = 500; // milliseconds
         let start = null;
         
         function animation(currentTime) {
@@ -432,4 +432,45 @@ window.addEventListener('keydown', (e) => {
 // Update active navigation link based on scroll position
 window.addEventListener('scroll', () => {
     updateNavigationOnScroll();
+});
+
+// QQ Drawer functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const qqDrawer = document.querySelector('.qq-drawer');
+    const qqDrawerToggle = document.querySelector('.qq-drawer-toggle');
+    const qqDrawerContent = document.querySelector('.qq-drawer-content');
+    
+    if (qqDrawer && qqDrawerToggle && qqDrawerContent) {
+        qqDrawerContent.style.display = 'block';
+        qqDrawerContent.classList.remove('show');
+        
+        qqDrawerToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (qqDrawerContent.classList.contains('show')) {
+                qqDrawerContent.classList.remove('show');
+                setTimeout(() => {
+                    if (!qqDrawerContent.classList.contains('show')) {
+                        qqDrawerContent.style.pointerEvents = 'none';
+                    }
+                }, 400);
+            } else {
+                qqDrawerContent.style.pointerEvents = 'auto';
+                qqDrawerContent.classList.add('show');
+            }
+        });
+        
+        // Close drawer when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!qqDrawer.contains(e.target) && qqDrawerContent.classList.contains('show')) {
+                qqDrawerContent.classList.remove('show');
+                setTimeout(() => {
+                    if (!qqDrawerContent.classList.contains('show')) {
+                        qqDrawerContent.style.pointerEvents = 'none';
+                    }
+                }, 400);
+            }
+        });
+    }
 });
