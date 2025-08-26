@@ -296,7 +296,7 @@ function scrollToSection(index) {
         // Use custom smooth scrolling for better control
         const startPosition = window.pageYOffset;
         const distance = targetTop - startPosition;
-        const duration = 500; // milliseconds
+        const duration = 150; // milliseconds
         let start = null;
         
         function animation(currentTime) {
@@ -434,6 +434,25 @@ window.addEventListener('scroll', () => {
     updateNavigationOnScroll();
 });
 
+let currentOpenDrawer = null;
+
+document.addEventListener('click', function(e) {
+    const drawers = document.querySelectorAll('.qq-drawer, .wiki-drawer');
+    let shouldCloseAll = true;
+    
+    drawers.forEach(drawer => {
+        if (drawer.contains(e.target)) {
+            shouldCloseAll = false;
+        }
+    });
+    
+    if (shouldCloseAll && currentOpenDrawer) {
+        currentOpenDrawer.classList.remove('show');
+        currentOpenDrawer.style.pointerEvents = 'none';
+        currentOpenDrawer = null;
+    }
+});
+
 // QQ Drawer functionality
 document.addEventListener('DOMContentLoaded', function() {
     const qqDrawer = document.querySelector('.qq-drawer');
@@ -450,26 +469,43 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (qqDrawerContent.classList.contains('show')) {
                 qqDrawerContent.classList.remove('show');
-                setTimeout(() => {
-                    if (!qqDrawerContent.classList.contains('show')) {
-                        qqDrawerContent.style.pointerEvents = 'none';
-                    }
-                }, 400);
+                    currentOpenDrawer = null;
             } else {
-                qqDrawerContent.style.pointerEvents = 'auto';
+                if (currentOpenDrawer && currentOpenDrawer !== qqDrawerContent) {
+                    currentOpenDrawer.classList.remove('show');
+                }
+                
                 qqDrawerContent.classList.add('show');
+                currentOpenDrawer = qqDrawerContent;
             }
         });
+    }
+});
+
+// Wiki Drawer functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const wikiDrawer = document.querySelector('.wiki-drawer');
+    const wikiDrawerToggle = document.querySelector('.wiki-drawer-toggle');
+    const wikiDrawerContent = document.querySelector('.wiki-drawer-content');
+    
+    if (wikiDrawer && wikiDrawerToggle && wikiDrawerContent) {
+        wikiDrawerContent.style.display = 'block';
+        wikiDrawerContent.classList.remove('show');
         
-        // Close drawer when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!qqDrawer.contains(e.target) && qqDrawerContent.classList.contains('show')) {
-                qqDrawerContent.classList.remove('show');
-                setTimeout(() => {
-                    if (!qqDrawerContent.classList.contains('show')) {
-                        qqDrawerContent.style.pointerEvents = 'none';
-                    }
-                }, 400);
+        wikiDrawerToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (wikiDrawerContent.classList.contains('show')) {
+                wikiDrawerContent.classList.remove('show');
+                currentOpenDrawer = null;
+            } else {
+                if (currentOpenDrawer && currentOpenDrawer !== wikiDrawerContent) {
+                    currentOpenDrawer.classList.remove('show');
+                }
+                
+                wikiDrawerContent.classList.add('show');
+                currentOpenDrawer = wikiDrawerContent;
             }
         });
     }

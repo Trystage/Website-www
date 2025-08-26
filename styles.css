@@ -654,14 +654,17 @@ footer {
     margin-top: 1rem;
 }
 
-.social-links a {
+.social-links a,
+.social-links button {
     color: white;
     margin: 0 1rem;
     font-weight: 600;
     transition: color 0.3s;
+    font-size: inherit;
 }
 
-.social-links a:hover {
+.social-links a:hover,
+.social-links button:hover {
     color: #00BFFF;
 }
 
@@ -715,12 +718,6 @@ footer {
     pointer-events: auto;
 }
 
-.qq-drawer-content.show {
-    display: flex;
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-}
-
 .qq-group-link {
     color: black;
     text-align: center;
@@ -731,6 +728,69 @@ footer {
 }
 
 .qq-group-link:hover {
+    color: #00BFFF;
+}
+
+/* Wiki Drawer */
+.wiki-drawer {
+    position: relative;
+    display: inline-block;
+}
+
+.wiki-drawer-toggle {
+    background: none;
+    border: none;
+    color: white;
+    margin: 0 1rem;
+    font-weight: 600;
+    transition: color 0.3s;
+    cursor: pointer;
+}
+
+.wiki-drawer-toggle:hover {
+    color: #00BFFF;
+}
+
+.wiki-drawer-content {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 10px;
+    display: block;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 245px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1), transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    transform: translateX(-50%) translateY(20px);
+    color: black;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    pointer-events: none;
+}
+
+.wiki-drawer-content.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+.wiki-link {
+    color: black;
+    text-align: center;
+    padding: 5px;
+    transition: color 0.3s;
+    text-decoration: none;
+    display: block;
+}
+
+.wiki-link:hover {
     color: #00BFFF;
 }
 
