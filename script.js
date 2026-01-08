@@ -230,24 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
     
     // Set initial active navigation link
-    const navLinks = document.querySelectorAll('nav ul li a');
-    const sections = document.querySelectorAll('main section');
-    
-    let current = '';
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        
-        if (window.pageYOffset >= (sectionTop - 100)) {
-            current = section.getAttribute('id');
-        }
-    });
-    
-    navLinks.forEach(link => {
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-        }
-    });
+    updateNavigationOnScroll();
 });
 
 // For news boxes, we need to wait for them to be loaded
@@ -282,157 +265,29 @@ const typing = () => {
 // Start typing effect after a short delay
 setTimeout(typing, 500);
 
-// Auto scroll to next section on scroll (page flip effect)
-let isScrolling = false;
-let scrollTimeout;
-
-// Function to scroll to a specific section
-function scrollToSection(index) {
-    const sections = document.querySelectorAll('main section');
-    if (index >= 0 && index < sections.length) {
-        isScrolling = true;
-        const targetTop = sections[index].offsetTop - 70; // Adjust for fixed header
-        
-        // Use custom smooth scrolling for better control
-        const startPosition = window.pageYOffset;
-        const distance = targetTop - startPosition;
-        const duration = 150; // milliseconds
-        let start = null;
-        
-        function animation(currentTime) {
-            if (start === null) start = currentTime;
-            const timeElapsed = currentTime - start;
-            const run = ease(timeElapsed, startPosition, distance, duration);
-            window.scrollTo(0, run);
-            if (timeElapsed < duration) requestAnimationFrame(animation);
-            else {
-                isScrolling = false;
-            }
-        }
-        
-        // Easing function for smooth animation
-        function ease(t, b, c, d) {
-            t /= d / 2;
-            if (t < 1) return c / 2 * t * t + b;
-            t--;
-            return -c / 2 * (t * (t - 2) - 1) + b;
-        }
-        
-        requestAnimationFrame(animation);
-        
-        // Clear any existing timeout
-        if (scrollTimeout) clearTimeout(scrollTimeout);
-        
-        // Set a timeout to ensure isScrolling is reset even if animation is interrupted
-        scrollTimeout = setTimeout(() => {
-            isScrolling = false;
-        }, duration + 100);
-    }
-}
-
-// Improved section detection
-function getCurrentSectionIndex() {
-    const sections = document.querySelectorAll('main section');
-    let currentSectionIndex = 0;
-    
-    // Find the section that takes up the most space in the viewport
-    let maxVisibleHeight = 0;
-    
-    for (let i = 0; i < sections.length; i++) {
-        const rect = sections[i].getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        
-        // Calculate visible height of section in viewport
-        const visibleTop = Math.max(0, rect.top);
-        const visibleBottom = Math.min(viewportHeight, rect.bottom);
-        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-        
-        if (visibleHeight > maxVisibleHeight) {
-            maxVisibleHeight = visibleHeight;
-            currentSectionIndex = i;
-        }
-    }
-    
-    return currentSectionIndex;
-}
-
-// Improved scroll position detection for navigation links
+// Use IntersectionObserver for navigation highlighting to improve performance
 function updateNavigationOnScroll() {
-    const sections = document.querySelectorAll('main section');
-    const navLinks = document.querySelectorAll('nav ul li a');
-    
-    let current = '';
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        const scrollPosition = window.pageYOffset + window.innerHeight / 2;
-        
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            current = section.getAttribute('id');
-        }
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.getAttribute('id');
+                document.querySelectorAll('nav ul li a').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${id}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    }, {
+        threshold: 0.5 // Trigger when 50% of the section is visible
     });
-    
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-        }
+
+    document.querySelectorAll('main section').forEach(section => {
+        observer.observe(section);
     });
 }
 
-// Scroll with mouse wheel - with debouncing
-let wheelTimeout;
-window.addEventListener('wheel', (e) => {
-    // Prevent default scrolling behavior completely
-    e.preventDefault();
-    
-    if (isScrolling) return;
-    
-    // Debounce wheel events
-    if (wheelTimeout) clearTimeout(wheelTimeout);
-    wheelTimeout = setTimeout(() => {
-        const sections = document.querySelectorAll('main section');
-        const currentSectionIndex = getCurrentSectionIndex();
-        
-        // Determine the next section based on scroll direction
-        const direction = e.deltaY > 0 ? 1 : -1;
-        const nextSectionIndex = currentSectionIndex + direction;
-        
-        // Scroll to the next section if it exists
-        scrollToSection(nextSectionIndex);
-    }, 50); // 50ms debounce
-}, { passive: false }); // Disable passive event listener to allow preventDefault
-
-// Scroll with arrow keys
-window.addEventListener('keydown', (e) => {
-    if (isScrolling) return;
-    
-    // Only handle arrow keys
-    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
-    
-    const sections = document.querySelectorAll('main section');
-    const currentSectionIndex = getCurrentSectionIndex();
-    
-    // Determine the next section based on key pressed
-    let nextSectionIndex = currentSectionIndex;
-    if (e.key === 'ArrowDown') {
-        nextSectionIndex = currentSectionIndex + 1;
-    } else if (e.key === 'ArrowUp') {
-        nextSectionIndex = currentSectionIndex - 1;
-    }
-    
-    // Scroll to the next section if it exists
-    scrollToSection(nextSectionIndex);
-    
-    // Prevent default behavior for arrow keys
-    e.preventDefault();
-});
-
-// Update active navigation link based on scroll position
-window.addEventListener('scroll', () => {
-    updateNavigationOnScroll();
-});
 
 let currentOpenDrawer = null;
 
