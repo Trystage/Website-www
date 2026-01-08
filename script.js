@@ -6,50 +6,23 @@ window.addEventListener('load', function() {
     }
 });
 
-// Smooth scrolling for navigation links
+// Smooth scrolling behavior is handled by CSS (scroll-behavior: smooth)
+// This event listener updates the active state of navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
-        
-        // Custom smooth scrolling with easing function
-        const targetPosition = targetElement.offsetTop - 70; // Adjust for fixed header
-        const startPosition = window.pageYOffset;
-        const distance = targetPosition - startPosition;
-        const duration = 1000;
-        let start = null;
-        
-        function animation(currentTime) {
-            if (start === null) start = currentTime;
-            const timeElapsed = currentTime - start;
-            const run = ease(timeElapsed, startPosition, distance, duration);
-            window.scrollTo(0, run);
-            if (timeElapsed < duration) requestAnimationFrame(animation);
-        }
-        
-        // Easing function for smooth animation
-        function ease(t, b, c, d) {
-            t /= d / 2;
-            if (t < 1) return c / 2 * t * t + b;
-            t--;
-            return -c / 2 * (t * (t - 2) - 1) + b;
-        }
-        
-        requestAnimationFrame(animation);
-        
+    anchor.addEventListener('click', function () {
         // Update active navigation link
         document.querySelectorAll('nav ul li a').forEach(link => {
             link.classList.remove('active');
         });
         this.classList.add('active');
         
-        // Close mobile menu if open
+        // Close mobile menu if open (handled by another listener, but good to ensure)
         const navMenu = document.querySelector('.nav-menu');
         const hamburger = document.querySelector('.hamburger');
-        navMenu.classList.remove('active');
-        hamburger.classList.remove('active');
+        if (navMenu && navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+        }
     });
 });
 
@@ -160,9 +133,6 @@ async function loadNews() {
     }
 }
 
-// Load news when page loads
-// Removed to prevent duplicate loading
-
 // Copy IP address functionality
 document.querySelectorAll('.copy-ip').forEach(button => {
     button.addEventListener('click', function() {
@@ -231,7 +201,145 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Set initial active navigation link
     updateNavigationOnScroll();
+
+    // Initialize Language
+    initLanguage();
+
+    // Initialize Theme
+    initTheme();
 });
+
+// Translation Dictionary
+const translations = {
+    'zh': {
+        'loading': '加载中...',
+        'nav.home': '首页',
+        'nav.developers': '开发者',
+        'nav.gallery': '项目画廊',
+        'nav.resources': '资源站',
+        'hero.subtitle': '一个为创造与竞技而生的社区。',
+        'hero.cta': '探索我们的服务器',
+        'projects.title': '我们的服务器',
+        'projects.ts.desc': '一个充满设计与未来感的小游戏服务器，对完整世界的挖掘与创新。',
+        'projects.ts.feat1': '特殊游戏体验',
+        'projects.ts.feat2': '内容更新极快',
+        'projects.ts.feat3': '极高的可探索性',
+        'projects.tbw.desc': '基于全球最大服务器 Hypixel 设计，提供专业的高质量起床战争体验。',
+        'projects.tbw.feat1': '专业级竞技场',
+        'projects.tbw.feat2': '中高延迟手感',
+        'projects.tbw.feat3': '可靠的反作弊措施',
+        'btn.details': '了解详情',
+        'btn.copy_ip': '复制IP地址',
+        'news.title': '最新新闻',
+        'about.title': '关于我们',
+        'about.p1': 'Trystage是一个致力于为所有人提供高质量体验的社区。我们专注于创造竞技和生活，提供各种有趣的玩法和活动。',
+        'about.p2': '我们的团队由一群热爱游戏的开发者和设计师组成，致力于不断改进和创新，带来更好的体验。',
+        'about.join': '加入我们，一起探索无限可能！',
+        'footer.slogan': '为世界而诞生',
+        'footer.community': '社区',
+        'footer.forum': '论坛',
+        'footer.qq_group': 'QQ群',
+        'footer.resources': '资源',
+        'footer.social': '社交',
+        'footer.douyin': '抖音',
+        'toast.copy': 'IP地址已复制！'
+    },
+    'en': {
+        'loading': 'Loading...',
+        'nav.home': 'Home',
+        'nav.developers': 'Developers',
+        'nav.gallery': 'Gallery',
+        'nav.resources': 'Resources',
+        'hero.subtitle': 'A community born for creation and competition.',
+        'hero.cta': 'Explore Servers',
+        'projects.title': 'Our Servers',
+        'projects.ts.desc': 'A futuristic mini-game server focused on innovation and world exploration.',
+        'projects.ts.feat1': 'Unique Gameplay',
+        'projects.ts.feat2': 'Fast Updates',
+        'projects.ts.feat3': 'High Explorability',
+        'projects.tbw.desc': 'Based on Hypixel, providing professional high-quality Bedwars experience.',
+        'projects.tbw.feat1': 'Pro Arenas',
+        'projects.tbw.feat2': 'Optimized Latency',
+        'projects.tbw.feat3': 'Reliable Anti-Cheat',
+        'btn.details': 'Details',
+        'btn.copy_ip': 'Copy IP',
+        'news.title': 'Latest News',
+        'about.title': 'About Us',
+        'about.p1': 'Trystage is a community dedicated to providing high-quality experiences for everyone. We focus on creative competition and lifestyle.',
+        'about.p2': 'Our team consists of passionate developers and designers committed to continuous improvement and innovation.',
+        'about.join': 'Join us and explore infinite possibilities!',
+        'footer.slogan': 'Born for the World',
+        'footer.community': 'Community',
+        'footer.forum': 'Forum',
+        'footer.qq_group': 'QQ Group',
+        'footer.resources': 'Resources',
+        'footer.social': 'Social',
+        'footer.douyin': 'TikTok (Douyin)',
+        'toast.copy': 'IP Address Copied!'
+    }
+};
+
+let currentLang = localStorage.getItem('lang') || 'zh';
+let currentTheme = localStorage.getItem('theme') || 'dark';
+
+function initTheme() {
+    const themeToggle = document.getElementById('theme-toggle');
+    
+    // Apply initial theme
+    applyTheme(currentTheme);
+    
+    themeToggle.addEventListener('click', () => {
+        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('theme', currentTheme);
+        applyTheme(currentTheme);
+    });
+}
+
+function applyTheme(theme) {
+    if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        document.querySelector('.sun-icon').style.display = 'none';
+        document.querySelector('.moon-icon').style.display = 'block';
+    } else {
+        document.documentElement.removeAttribute('data-theme');
+        document.querySelector('.sun-icon').style.display = 'block';
+        document.querySelector('.moon-icon').style.display = 'none';
+    }
+}
+
+function initLanguage() {
+    const langToggle = document.getElementById('lang-toggle');
+    
+    // Apply initial language
+    applyLanguage(currentLang);
+    
+    // Update button text
+    updateLangButton(langToggle);
+
+    langToggle.addEventListener('click', () => {
+        currentLang = currentLang === 'zh' ? 'en' : 'zh';
+        localStorage.setItem('lang', currentLang);
+        applyLanguage(currentLang);
+        updateLangButton(langToggle);
+    });
+}
+
+function updateLangButton(btn) {
+    btn.textContent = currentLang === 'zh' ? 'EN' : 'CN';
+}
+
+function applyLanguage(lang) {
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    const elements = document.querySelectorAll('[data-i18n]');
+    
+    elements.forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+            el.textContent = translations[lang][key];
+        }
+    });
+}
+
 
 // For news boxes, we need to wait for them to be loaded
 // We'll call initScrollAnimations again after news is loaded
@@ -255,7 +363,7 @@ const typing = () => {
         setTimeout(typing, 150);
     } else {
         // Add blinking cursor
-        typingText.style.borderRight = '0.15em solid #00BFFF';
+        typingText.style.borderRight = '0.15em solid #00f3ff';
         setTimeout(() => {
             typingText.style.borderRight = 'none';
         }, 500);
@@ -287,81 +395,3 @@ function updateNavigationOnScroll() {
         observer.observe(section);
     });
 }
-
-
-let currentOpenDrawer = null;
-
-document.addEventListener('click', function(e) {
-    const drawers = document.querySelectorAll('.qq-drawer, .wiki-drawer');
-    let shouldCloseAll = true;
-    
-    drawers.forEach(drawer => {
-        if (drawer.contains(e.target)) {
-            shouldCloseAll = false;
-        }
-    });
-    
-    if (shouldCloseAll && currentOpenDrawer) {
-        currentOpenDrawer.classList.remove('show');
-        currentOpenDrawer.style.pointerEvents = 'none';
-        currentOpenDrawer = null;
-    }
-});
-
-// QQ Drawer functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const qqDrawer = document.querySelector('.qq-drawer');
-    const qqDrawerToggle = document.querySelector('.qq-drawer-toggle');
-    const qqDrawerContent = document.querySelector('.qq-drawer-content');
-    
-    if (qqDrawer && qqDrawerToggle && qqDrawerContent) {
-        qqDrawerContent.style.display = 'block';
-        qqDrawerContent.classList.remove('show');
-        
-        qqDrawerToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            if (qqDrawerContent.classList.contains('show')) {
-                qqDrawerContent.classList.remove('show');
-                    currentOpenDrawer = null;
-            } else {
-                if (currentOpenDrawer && currentOpenDrawer !== qqDrawerContent) {
-                    currentOpenDrawer.classList.remove('show');
-                }
-                
-                qqDrawerContent.classList.add('show');
-                currentOpenDrawer = qqDrawerContent;
-            }
-        });
-    }
-});
-
-// Wiki Drawer functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const wikiDrawer = document.querySelector('.wiki-drawer');
-    const wikiDrawerToggle = document.querySelector('.wiki-drawer-toggle');
-    const wikiDrawerContent = document.querySelector('.wiki-drawer-content');
-    
-    if (wikiDrawer && wikiDrawerToggle && wikiDrawerContent) {
-        wikiDrawerContent.style.display = 'block';
-        wikiDrawerContent.classList.remove('show');
-        
-        wikiDrawerToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            if (wikiDrawerContent.classList.contains('show')) {
-                wikiDrawerContent.classList.remove('show');
-                currentOpenDrawer = null;
-            } else {
-                if (currentOpenDrawer && currentOpenDrawer !== wikiDrawerContent) {
-                    currentOpenDrawer.classList.remove('show');
-                }
-                
-                wikiDrawerContent.classList.add('show');
-                currentOpenDrawer = wikiDrawerContent;
-            }
-        });
-    }
-});

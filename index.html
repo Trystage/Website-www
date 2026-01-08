@@ -15,7 +15,7 @@
 <body>
     <div id="loading-overlay">
         <div class="loading-spinner"></div>
-        <p>加载中...</p>
+        <p data-i18n="loading">加载中...</p>
     </div>
     <header>
         <div class="logo">
@@ -24,10 +24,10 @@
         </div>
         <nav>
             <ul class="nav-menu">
-                <li><a href="#home">首页</a></li>
-                <li><a href="https://dev.trystage.cn/">开发者</a></li>
-                <li><a href="https://gallery.trystage.cn/">项目画廊</a></li>
-                <li><a href="https://res.trystage.cn/">资源站</a></li>
+                <li><a href="#home" data-i18n="nav.home">首页</a></li>
+                <li><a href="https://dev.trystage.cn/" data-i18n="nav.developers">开发者</a></li>
+                <li><a href="https://gallery.trystage.cn/" data-i18n="nav.gallery">项目画廊</a></li>
+                <li><a href="https://res.trystage.cn/" data-i18n="nav.resources">资源站</a></li>
                 <li><a href="http://wiki.tsmp.top">TS Wiki</a></li>
                 <li><a href="http://wiki.trystage.cn">TBW Wiki</a></li>
             </ul>
@@ -43,38 +43,38 @@
         <section id="home" class="hero">
             <div class="hero-content">
                 <h1 class="typing-text">Trystage</h1>
-                <h2>一个为创造与竞技而生的社区。</h2>
-                <a href="#projects" class="cta-button">探索我们的服务器</a>
+                <h2 data-i18n="hero.subtitle">一个为创造与竞技而生的社区。</h2>
+                <a href="#projects" class="btn primary" data-i18n="hero.cta">探索我们的服务器</a>
             </div>
         </section>
 
         <section id="projects" class="projects">
-            <h2>我们的服务器</h2>
+            <h2 data-i18n="projects.title">我们的服务器</h2>
             <div class="projects-grid">
                 <div class="project-card">
                     <h3>TrystageServer</h3>
-                    <p>一个充满设计与未来感的小游戏服务器，对完整世界的挖掘与创新。</p>
+                    <p data-i18n="projects.ts.desc">一个充满设计与未来感的小游戏服务器，对完整世界的挖掘与创新。</p>
                     <ul>
-                        <li>特殊游戏体验</li>
-                        <li>内容更新极快</li>
-                        <li>极高的可探索性</li>
+                        <li data-i18n="projects.ts.feat1">特殊游戏体验</li>
+                        <li data-i18n="projects.ts.feat2">内容更新极快</li>
+                        <li data-i18n="projects.ts.feat3">极高的可探索性</li>
                     </ul>
                     <div class="card-buttons">
-                        <a href="http://www.tsmp.top/"><button class="detail-button">了解详情</button></a>
-                        <button class="copy-ip" data-ip="play.trystage.cn">复制IP地址</button>
+                        <a href="http://www.tsmp.top/"><button class="detail-button" data-i18n="btn.details">了解详情</button></a>
+                        <button class="copy-ip" data-ip="play.trystage.cn" data-i18n="btn.copy_ip">复制IP地址</button>
                     </div>
                 </div>
                 <div class="project-card">
                     <h3>TrystageBedwars</h3>
-                    <p>基于全球最大服务器 Hypixel 设计，提供专业的高质量起床战争体验。</p>
+                    <p data-i18n="projects.tbw.desc">基于全球最大服务器 Hypixel 设计，提供专业的高质量起床战争体验。</p>
                     <ul>
-                        <li>专业级竞技场</li>
-                        <li>中高延迟手感</li>
-                        <li>可靠的反作弊措施</li>
+                        <li data-i18n="projects.tbw.feat1">专业级竞技场</li>
+                        <li data-i18n="projects.tbw.feat2">中高延迟手感</li>
+                        <li data-i18n="projects.tbw.feat3">可靠的反作弊措施</li>
                     </ul>
                     <div class="card-buttons">
-                        <button class="detail-button">了解详情</button>
-                        <button class="copy-ip" data-ip="bw.trystage.cn">复制IP地址</button>
+                        <button class="detail-button" data-i18n="btn.details">了解详情</button>
+                        <button class="copy-ip" data-ip="bw.trystage.cn" data-i18n="btn.copy_ip">复制IP地址</button>
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
         <!-- News Section -->
         <section id="news">
             <div class="container">
-                <h2>最新新闻</h2>
+                <h2 data-i18n="news.title">最新新闻</h2>
                 <div id="news-container" class="news-grid">
                     <!-- News items will be loaded here by JavaScript -->
                 </div>
@@ -93,43 +93,63 @@
         <!-- About Section -->
         <section id="about">
             <div class="container">
-                <h2>关于我们</h2>
+                <h2 data-i18n="about.title">关于我们</h2>
                 <div class="about-content">
-                    <p>Trystage是一个致力于为所有人提供高质量体验的社区。我们专注于创造竞技和生活，提供各种有趣的玩法和活动。</p>
-                    <p>我们的团队由一群热爱游戏的开发者和设计师组成，致力于不断改进和创新，带来更好的体验。</p>
-                    <p><a href="http://wiki.trystage.cn/zh/Joinus">加入我们，一起探索无限可能！</a></p>
+                    <p data-i18n="about.p1">Trystage是一个致力于为所有人提供高质量体验的社区。我们专注于创造竞技和生活，提供各种有趣的玩法和活动。</p>
+                    <p data-i18n="about.p2">我们的团队由一群热爱游戏的开发者和设计师组成，致力于不断改进和创新，带来更好的体验。</p>
+                    <p><a href="http://wiki.trystage.cn/zh/Joinus" data-i18n="about.join">加入我们，一起探索无限可能！</a></p>
                 </div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 Trystage</p>
-        <div class="social-links">
-            <a href="https://discord.gg/invite/5Gxu9xzAeN" class="social-icon">Discord</a>
-            <a href="https://space.bilibili.com/1478748996" class="social-icon">Bilibili</a>
-            <div class="qq-drawer">
-                <button class="social-icon qq-drawer-toggle">QQ群</button>
-                <div class="qq-drawer-content">
-                    <a href="https://qm.qq.com/q/PlpxvW9AA" class="qq-group-link">TrystageServer交流群</a>
-                    <a href="https://qm.qq.com/q/IwLZUpBAEo" class="qq-group-link">TrystageBedwars交流群</a>
-
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="icon.png" alt="Trystage Logo">
+                <h3>TRYSTAGE</h3>
+                <p data-i18n="footer.slogan">为世界而诞生</p>
+            </div>
+            <div class="footer-links">
+                <div class="link-group">
+                    <h4 data-i18n="footer.community">社区</h4>
+                    <a href="https://discord.gg/invite/5Gxu9xzAeN">Discord</a>
+                    <a href="https://forum.trystage.cn/" data-i18n="footer.forum">论坛</a>
+                    <div class="qq-drawer">
+                        <span class="drawer-trigger" data-i18n="footer.qq_group">QQ群</span>
+                        <div class="drawer-content">
+                            <a href="https://qm.qq.com/q/PlpxvW9AA">TrystageServer</a>
+                            <a href="https://qm.qq.com/q/IwLZUpBAEo">TrystageBedwars</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="link-group">
+                    <h4 data-i18n="footer.resources">资源</h4>
+                    <a href="https://wiki.tsmp.top">TS Wiki</a>
+                    <a href="http://wiki.trystage.cn">TBW Wiki</a>
+                    <a href="https://api.trystage.cn">API</a>
+                </div>
+                <div class="link-group">
+                    <h4 data-i18n="footer.social">社交</h4>
+                    <a href="https://space.bilibili.com/1478748996">Bilibili</a>
+                    <a href="https://www.douyin.com/user/MS4wLjABAAAAnSlpiXWV4S9aTOuNKislQoOn7p5shjojg-Rv7wIxCho" data-i18n="footer.douyin">抖音</a>
+                    <a href="https://github.com/Trystage">GitHub</a>
                 </div>
             </div>
-            <a href="https://www.douyin.com/user/MS4wLjABAAAAnSlpiXWV4S9aTOuNKislQoOn7p5shjojg-Rv7wIxCho" class="social-icon">抖音</a>
-            <a href="https://forum.trystage.cn/" class="social-icon">论坛</a>
-            <div class="wiki-drawer">
-                <button class="social-icon wiki-drawer-toggle">Wiki</button>
-                <div class="wiki-drawer-content">
-                    <a href="https://wiki.tsmp.top/" class="wiki-link">TrystageServerWiki</a>
-                    <a href="http://wiki.trystage.cn/" class="wiki-link">TrystageBedwarsWiki</a>
-                </div>
-            </div>
-            <a href="https://api.trystage.cn/" class="social-icon">API</a>
-            <a href="https://github.com/Trystage" class="social-icon">GitHub</a>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Trystage. All rights reserved.</p>
         </div>
     </footer>
 
+    <div class="floating-controls">
+        <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">
+            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+        <div class="divider"></div>
+        <button id="lang-toggle" class="lang-btn">EN/CN</button>
+    </div>
     <div id="toast"></div>
     <script src="script.js"></script>
 </body>
